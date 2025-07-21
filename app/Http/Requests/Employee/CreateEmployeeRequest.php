@@ -22,14 +22,15 @@ class CreateEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'      => ['required', 'string', 'max:100'],
-            'email'     => ['required', 'email', 'max:255', 'unique:employees,email'],
-            'phone'     => ['nullable', 'string', 'max:15'],
-            'position'  => ['required', 'string'],
-            'salary'    => ['required', 'numeric', 'min:0'],
-            'hired_at'  => ['required', 'date'],
-            'status'    => ['required', 'in:0,1'],
-            'photo'     => ['nullable', 'image'],
+            'name'           => ['required', 'string', 'max:100'],
+            'email'          => ['required', 'email', 'max:255', 'unique:employees,email'],
+            'phone'          => ['nullable', 'string', 'max:15'],
+            'position'       => ['required', 'string'],
+            'salary'         => ['required', 'numeric', 'min:0'],
+            'hired_at'       => ['required', 'date'],
+            'department_id'  => ['required', 'exists:departments,id'],
+            'status'         => ['required', 'in:0,1'],
+            'photo'          => ['nullable', 'image'],
         ];
     }
 }

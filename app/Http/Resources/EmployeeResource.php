@@ -22,9 +22,10 @@ class EmployeeResource extends JsonResource
             'phone' => $this->phone,
             'position' => $this->position,
             'salary' => $this->salary,
-            'status' => EmployeeStatus::getStringValue($this->status),
+            'status_value' => EmployeeStatus::getStringValue($this->status),
+            'status' => $this->status,
             'department' => $this->whenLoaded('department'),
-            'photo' => $this->photo,
+            'photo' => $this->getFirstMediaUrl('employees') ? $this->getFirstMediaUrl('employees') :null,
             'hired_at' => $this->hired_at,
             'created_at' => $this->note,
         ];

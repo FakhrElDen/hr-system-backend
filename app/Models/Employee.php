@@ -21,6 +21,7 @@ class Employee extends Model implements HasMedia
         'salary',
         'hired_at',
         'status',
+        'department_id'
     ];
 
     public function getCreatedAtAttribute($value)

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Employee\BulkDeleteEmployeeRequest;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
+use App\Http\Resources\EmployeeResource;
+use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 
@@ -26,20 +28,44 @@ class EmployeeController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        $employees = $query->paginate(5);
+        $employees = $query->orderBy('created_at', 'DESC')->paginate(5);
 
-        return response()->json($employees, 201);
+        return response()->json([
+        'data' => EmployeeResource::collection($employees),
+        'meta' => [
+            'current_page' => $employees->currentPage(),
+            'last_page'    => $employees->lastPage(),
+            'per_page'     => $employees->perPage(),
+            'total'        => $employees->total(),
+        ],
+    ], 200);
     }
 
     public function store(CreateEmployeeRequest $request)
     {
         $employee = Employee::create($request->validated());
+
+        if ($request->hasFile('photo')) {
+            $employee->addMediaFromRequest('photo')->toMediaCollection('employees');
+        }
+
         return response()->json($employee, 201);
+    }
+
+    public function edit(Employee $employee)
+    {
+        return response()->json($employee);
     }
 
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->validated());
+
+        if ($request->hasFile('photo')) {
+            $employee->clearMediaCollection('employees');
+            $employee->addMediaFromRequest('photo')->toMediaCollection('employees');
+        }
+
         return response()->json($employee);
     }
 
@@ -57,6 +83,15 @@ class EmployeeController extends Controller
 
     public function restore()
     {
-        //
+        Employee::onlyTrashed()->restore();
+
+        return response()->json(null, 200);
+    }
+
+    public function departments()
+    {
+        $departments =  Department::get();
+
+        return response()->json($departments, 200);
     }
 }
