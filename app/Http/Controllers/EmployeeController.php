@@ -6,12 +6,28 @@ use App\Http\Requests\Employee\BulkDeleteEmployeeRequest;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
 use App\Models\Employee;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $employees = Employee::with('department')->paginate(10);
+        $query = Employee::with('department');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('hired_at')) {
+            $query->whereDate('hired_at', $request->hired_at);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $employees = $query->paginate(5);
+
         return response()->json($employees, 201);
     }
 

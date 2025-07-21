@@ -25,16 +25,16 @@ class Employee extends Model implements HasMedia
 
     public function getCreatedAtAttribute($value)
     {
-        return Carbon::parse($value)->format('Y-m-d H:i');
+        return Carbon::parse($value)->format('Y-m-d');
     }
 
     public function getHiredAtAttribute($value)
     {
-        return Carbon::parse($value)->format('Y-m-d H:i');
+        return Carbon::parse($value)->format('Y-m-d');
     }
 
     public function department()
     {
-        return $this->hasOne(Department::class);
+        return $this->belongsTo(Department::class);
     }
 }

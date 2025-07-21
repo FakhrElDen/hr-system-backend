@@ -15,5 +15,5 @@ Route::middleware('auth:sanctum')->prefix('employees')->name('employees.')->grou
     Route::put('/{employee}', [EmployeeController::class, 'update'])->name('update');
     Route::delete('/{employee}', [EmployeeController::class, 'destroy'])->name('destroy');
     Route::put('/restore', [EmployeeController::class, 'restore'])->name('restore');
-    Route::delete('/bulk-delete', [EmployeeController::class, 'bulkDelete'])->name('bulkDelete');
+    Route::post('/bulk-delete', [EmployeeController::class, 'bulkDelete'])->name('bulkDelete');
 });
