@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EmployeesExport;
 use App\Http\Requests\Employee\BulkDeleteEmployeeRequest;
 use App\Http\Requests\Employee\CreateEmployeeRequest;
 use App\Http\Requests\Employee\UpdateEmployeeRequest;
@@ -9,6 +10,7 @@ use App\Http\Resources\EmployeeResource;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class EmployeeController extends Controller
 {
@@ -31,14 +33,14 @@ class EmployeeController extends Controller
         $employees = $query->orderBy('created_at', 'DESC')->paginate(5);
 
         return response()->json([
-        'data' => EmployeeResource::collection($employees),
-        'meta' => [
-            'current_page' => $employees->currentPage(),
-            'last_page'    => $employees->lastPage(),
-            'per_page'     => $employees->perPage(),
-            'total'        => $employees->total(),
-        ],
-    ], 200);
+            'data' => EmployeeResource::collection($employees),
+            'meta' => [
+                'current_page' => $employees->currentPage(),
+                'last_page'    => $employees->lastPage(),
+                'per_page'     => $employees->perPage(),
+                'total'        => $employees->total(),
+            ],
+        ], 200);
     }
 
     public function store(CreateEmployeeRequest $request)
@@ -86,6 +88,11 @@ class EmployeeController extends Controller
         Employee::onlyTrashed()->restore();
 
         return response()->json(null, 200);
+    }
+
+    public function export()
+    {
+        return Excel::download(new EmployeesExport, 'employees.xlsx');
     }
 
     public function departments()
