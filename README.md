@@ -1,64 +1,101 @@
-HR System – Laravel API & Vue Frontend
-This project is a simple HR management system built with Laravel (backend) and Vue 3 (frontend).
-It handles CRUD operations for employees with filtering, search, and authentication using Sanctum.
+# 🚀 HR System – Laravel API & Vue Frontend
 
-Features
-Employee CRUD – Create, Read, Update, Delete employees.
-Filtering & Search – Filter by name, status, and hired date.
-Image Uploads – Employee photo uploads handled by Spatie Media Library.
-Excel Export – Export all employees to an Excel sheet using Laravel Excel.
-Authentication – API authentication with Laravel Sanctum.
-Seeders – Run provided seeders for test data and authentication users.
+This project is a simple **HR management system** built with **Laravel** (backend) and **Vue 3** (frontend).  
+It handles **CRUD operations for employees**, with filtering, search, image uploads, Excel export, and authentication using **Laravel Sanctum**.
 
-Setup Instructions
-Backend (Laravel)
-Install dependencies:
+---
 
+## ✨ Features
+
+✅ **Employee CRUD** – Create, Read, Update, and Delete employees  
+✅ **Filtering & Search** – Filter by name, status, and hired date  
+✅ **Image Uploads** – Employee photo uploads handled by [Spatie Media Library](https://spatie.be/docs/laravel-medialibrary)  
+✅ **Excel Export** – Export employees to Excel using [Laravel Excel](https://laravel-excel.com/)  
+✅ **Authentication** – API authentication with Laravel Sanctum  
+✅ **Seeders** – Preloaded seeders for test data and authentication users  
+
+---
+
+## ⚙️ Setup Instructions
+
+### 🔧 Backend (Laravel)
+
+1️⃣ **Install dependencies**  
+```bash
 composer install
-Set up your .env file with your database and Sanctum configuration.
+```
 
-Run migrations and seeders:
+2️⃣ **Configure environment**  
+Copy `.env.example` to `.env` and update:
+- Database credentials
+- Sanctum configuration
 
+3️⃣ **Run migrations & seeders**  
+```bash
 php artisan migrate --seed
-UserSeeder creates a default user for authentication.
+```
+- **UserSeeder**: Creates a default user for authentication  
+- **EmployeeSeeder**: Creates sample employees for testing
 
-EmployeeSeeder creates sample employees for testing.
-
-Link storage for uploaded images:
-
+4️⃣ **Link storage for uploaded images**  
+```bash
 php artisan storage:link
-CORS Configuration:
-In config/cors.php, update allowed_origins to include your frontend port. For example:
+```
 
+5️⃣ **Configure CORS**  
+Open `config/cors.php` and update `allowed_origins` to include your frontend port:
+```php
 'allowed_origins' => ['http://localhost:5173'],
-Serve the API:
+```
 
+6️⃣ **Serve the API**  
+```bash
 php artisan serve
-Frontend (Vue 3)
-Install dependencies:
+```
 
+---
+
+### 🌐 Frontend (Vue 3)
+
+1️⃣ **Install dependencies**  
+```bash
 npm install
-Run the development server:
+```
 
+2️⃣ **Run development server**  
+```bash
 npm run dev
-Make sure the port matches what you added in cors.php (default is 5173).
+```
 
-Notes
-Images: Employee photos are stored and managed using Spatie Media Library.
+✅ Ensure the port matches what you added in `config/cors.php` (default: **5173**).
 
-Excel Export: Use the provided /employees/export route to download an Excel sheet.
+---
 
-Authentication: Sanctum is used for login and token-based access.
+## 📌 Notes
 
-Login via /auth/login and store the returned token in local storage.
+📷 **Images**  
+Employee photos are stored and managed using **Spatie Media Library**.
 
-All protected routes require the Authorization: Bearer <token> header.
+📊 **Excel Export**  
+Use the provided route to download an Excel sheet:  
+`GET /employees/export`
 
-Seeder Information
-Run seeders to create test data:
+🔑 **Authentication**  
+Sanctum is used for login and token-based access.  
+- Login: `POST /auth/login`  
+- Store the returned token in local storage.  
+- All protected routes require the header:  
+`Authorization: Bearer <token>`
 
+---
+
+## 🌱 Seeder Information
+
+Run the following seeders to create test data:
+```bash
 php artisan db:seed --class=UserSeeder
 php artisan db:seed --class=EmployeeSeeder
-Use the seeded user credentials to log in from the frontend.
+```
 
-Test employees will appear in the listing with search & filtering.
+✅ Use the seeded user credentials to log in from the frontend.  
+✅ Test employees will appear in the listing with search & filtering enabled.
