@@ -24,14 +24,12 @@ class AuthController extends Controller
 
     public function logout()
     {
-        Auth::logout();
-
         $user = Auth::user();
 
         /** @var $token */
         $token = $user->currentAccessToken();
         $token->delete();
 
-        return $this->apiResponse(message: trans('user::message.logout_message'));
+        return response()->json(['message' => 'Logout successfully'], 200);
     }
 }
