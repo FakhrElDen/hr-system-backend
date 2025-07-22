@@ -71,23 +71,32 @@ class EmployeeController extends Controller
         return response()->json($employee);
     }
 
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
+        $employee = Employee::find($id);
+
+        if (!$employee) {
+            return response()->json(['message' => 'Employee not found'], 404);
+        }
+
         $employee->delete();
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Employee deleted successfully'], 200);
     }
 
     public function bulkDelete(BulkDeleteEmployeeRequest $request)
     {
         Employee::whereIn('id', $request->ids)->delete();
-        return response()->json(null, 204);
+        
+        return response()->json([
+            'message' => 'Employees deleted successfully'
+        ], 200);
     }
 
     public function restore()
     {
         Employee::onlyTrashed()->restore();
 
-        return response()->json(null, 200);
+        return response()->json(['message' => 'All trashed employees restored successfully'], 200);
     }
 
     public function export()

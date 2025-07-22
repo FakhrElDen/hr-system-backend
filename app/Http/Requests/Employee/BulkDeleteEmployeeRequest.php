@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Employee;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BulkDeleteEmployeeRequest extends FormRequest
 {
@@ -23,7 +24,10 @@ class BulkDeleteEmployeeRequest extends FormRequest
     {
         return [
             'ids'   => ['required', 'array'],
-            'ids.*' => ['integer', 'distinct', 'exists:employees,id'],
+            'ids.*' => [
+                'integer',
+                Rule::exists('employees', 'id')->whereNull('deleted_at'),
+            ],
         ];
     }
 }

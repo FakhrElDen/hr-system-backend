@@ -4,8 +4,8 @@ namespace App\Enums;
 
 class EmployeeStatus
 {
-    public const ACTIVE = 0;
-    public const IN_ACTIVE = 1;
+    public const IN_ACTIVE = 0;
+    public const ACTIVE = 1;
 
     public static function getStringValue(int $value): string
     {

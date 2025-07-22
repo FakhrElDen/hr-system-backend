@@ -25,7 +25,7 @@ class EmployeeResource extends JsonResource
             'status_value' => EmployeeStatus::getStringValue($this->status),
             'status' => $this->status,
             'department' => $this->whenLoaded('department'),
-            'photo' => $this->getFirstMediaUrl('employees') ? $this->getFirstMediaUrl('employees') :null,
+            'photo' => $this->getFirstMediaUrl('employees') ?: null,
             'hired_at' => $this->hired_at,
             'created_at' => $this->note,
         ];
