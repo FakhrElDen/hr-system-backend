@@ -12,18 +12,14 @@ class AuthController extends Controller
         $credentials = Auth::attempt($request->only('email', 'password'));
 
         if ($credentials == false) {
-            return response()->json([
-                'message' => 'wrong credentials',
-                'status_code' => 401,
-            ]);
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
         $user = Auth::user();
 
         return response()->json([
             'token' => $user->createToken(config('app.name'))->plainTextToken,
-            'user' => $user,
-        ]);
+        ], 200);
     }
 
     public function logout()
